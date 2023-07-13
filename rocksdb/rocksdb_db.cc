@@ -57,8 +57,8 @@ namespace {
   const std::string PROP_COMPACTION_PRI = "rocksdb.compaction_pri";
   const std::string PROP_COMPACTION_PRI_DEFAULT = "-1";
 
-  const std::string PROP_MAX_OPEN_FILES = "rocksdb.max_open_files";
-  const std::string PROP_MAX_OPEN_FILES_DEFAULT = "-1";
+//  const std::string PROP_MAX_OPEN_FILES = "rocksdb.max_open_files";
+//  const std::string PROP_MAX_OPEN_FILES_DEFAULT = "-1";
 
   const std::string PROP_L0_COMPACTION_TRIGGER = "rocksdb.level0_file_num_compaction_trigger";
   const std::string PROP_L0_COMPACTION_TRIGGER_DEFAULT = "0";
@@ -232,6 +232,7 @@ void RocksdbDB::GetOptions(const utils::Properties &props, rocksdb::Options *opt
   std::string env_uri = props.GetProperty(PROP_ENV_URI, PROP_ENV_URI_DEFAULT);
   std::string fs_uri = props.GetProperty(PROP_FS_URI, PROP_FS_URI_DEFAULT);
   rocksdb::Env* env =  rocksdb::Env::Default();;
+  /*
   if (!env_uri.empty() || !fs_uri.empty()) {
     rocksdb::Status s = rocksdb::Env::CreateFromUri(rocksdb::ConfigOptions(),
                                                     env_uri, fs_uri, &env, &env_guard);
@@ -240,14 +241,14 @@ void RocksdbDB::GetOptions(const utils::Properties &props, rocksdb::Options *opt
     }
     opt->env = env;
   }
-
+  */
   const std::string options_file = props.GetProperty(PROP_OPTIONS_FILE, PROP_OPTIONS_FILE_DEFAULT);
   if (options_file != "") {
-    rocksdb::ConfigOptions config_options;
-    config_options.ignore_unknown_options = false;
-    config_options.input_strings_escaped = true;
-    config_options.env = env;
-    rocksdb::Status s = rocksdb::LoadOptionsFromFile(config_options, options_file, opt, cf_descs);
+    //rocksdb::ConfigOptions config_options;
+    //config_options.ignore_unknown_options = false;
+    //config_options.input_strings_escaped = true;
+    //config_options.env = env;
+    rocksdb::Status s = rocksdb::LoadOptionsFromFile(options_file, env, opt, cf_descs);
     if (!s.ok()) {
       throw utils::Exception(std::string("RocksDB LoadOptionsFromFile: ") + s.ToString());
     }

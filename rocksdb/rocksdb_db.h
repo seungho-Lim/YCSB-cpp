@@ -15,6 +15,7 @@
 #include "core/properties.h"
 
 #include <rocksdb/db.h>
+#include <rocksdb/table.h>
 #include <rocksdb/options.h>
 
 namespace ycsbc {

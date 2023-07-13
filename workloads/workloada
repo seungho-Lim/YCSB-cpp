@@ -18,4 +18,9 @@ scanproportion=0
 insertproportion=0
 
 requestdistribution=zipfian
+zeropadding=20
+
+fieldcount=1
+fieldlength=1000 # 978 + 14 = 992 byte and it makes item size 1KB
+
 

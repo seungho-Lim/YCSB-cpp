@@ -10,17 +10,20 @@
 
 #---------------------build config-------------------------
 
+BASEIDR = /home/smrc
+
+
 # Database bindings
 BIND_WIREDTIGER ?= 0
 BIND_LEVELDB ?= 0
-BIND_ROCKSDB ?= 0
+BIND_ROCKSDB ?= 1
 BIND_LMDB ?= 0
 BIND_SQLITE ?= 0
 
 # Extra options
-DEBUG_BUILD ?=
-EXTRA_CXXFLAGS ?=
-EXTRA_LDFLAGS ?=
+DEBUG_BUILD ?= 1
+EXTRA_CXXFLAGS ?= -I/home/smrc/sh/rocksdb/include
+EXTRA_LDFLAGS ?= -L/home/smrc/sh/rocksdb -ldl -lz -lsnappy -lbz2 -llz4
 
 # HdrHistogram for tail latency report
 BIND_HDRHISTOGRAM ?= 1
@@ -49,6 +52,7 @@ endif
 ifeq ($(BIND_ROCKSDB), 1)
 	LDFLAGS += -lrocksdb
 	SOURCES += $(wildcard rocksdb/*.cc)
+	EXTRA_CXXFLAGS += -I${BASEDIR}/rocksdb/include
 endif
 
 ifeq ($(BIND_LMDB), 1)
@@ -66,7 +70,7 @@ LDFLAGS += $(EXTRA_LDFLAGS) -lpthread
 SOURCES += $(wildcard core/*.cc)
 OBJECTS += $(SOURCES:.cc=.o)
 DEPS += $(SOURCES:.cc=.d)
-EXEC = ycsb
+EXEC = ycsbrocks
 
 HDRHISTOGRAM_DIR = HdrHistogram_c
 HDRHISTOGRAM_LIB = $(HDRHISTOGRAM_DIR)/src/libhdr_histogram_static.a
