@@ -10,20 +10,23 @@
 
 #---------------------build config-------------------------
 
-BASEIDR = /home/smrc
+BASEIDR = /home/smrc/sh
 
 
 # Database bindings
 BIND_WIREDTIGER ?= 0
 BIND_LEVELDB ?= 0
-BIND_ROCKSDB ?= 1
+BIND_ROCKSDB ?= 0
 BIND_LMDB ?= 0
 BIND_SQLITE ?= 0
+BIND_PMEMDB ?= 1
 
 # Extra options
 DEBUG_BUILD ?= 1
-EXTRA_CXXFLAGS ?= -I/home/smrc/sh/rocksdb/include
-EXTRA_LDFLAGS ?= -L/home/smrc/sh/rocksdb -ldl -lz -lsnappy -lbz2 -llz4
+#EXTRA_CXXFLAGS ?= -I/home/smrc/sh/rocksdb/include
+#EXTRA_LDFLAGS ?= -L/home/smrc/sh/rocksdb -ldl -lz -lsnappy -lbz2 -llz4
+EXTRA_CXXFLAGS ?= -I/home/smrc/sh/pmem-rocksdb/build/include
+EXTRA_LDFLAGS ?= -L/home/smrc/sh/pmem-rocksdb/build/lib -ldl -lz -lsnappy -lbz2 -llz4
 
 # HdrHistogram for tail latency report
 BIND_HDRHISTOGRAM ?= 1
@@ -55,6 +58,14 @@ ifeq ($(BIND_ROCKSDB), 1)
 	EXTRA_CXXFLAGS += -I${BASEDIR}/rocksdb/include
 endif
 
+
+ifeq ($(BIND_PMEMDB), 1)
+	LDFLAGS += -lrocksdb
+	SOURCES += $(wildcard pmemdb/*.cc)
+#EXTRA_CXXFLAGS += -I${BASEDIR}/pmem-rocksdb/build/include
+	EXTRA_CXXFLAGS += -I/usr/include
+endif
+
 ifeq ($(BIND_LMDB), 1)
 	LDFLAGS += -llmdb
 	SOURCES += $(wildcard lmdb/*.cc)
@@ -64,13 +75,13 @@ ifeq ($(BIND_SQLITE), 1)
 	LDFLAGS += -lsqlite3
 	SOURCES += $(wildcard sqlite/*.cc)
 endif
-
+CXXFLAGS += -DON_DCPMM
 CXXFLAGS += -std=c++17 -Wall -pthread $(EXTRA_CXXFLAGS) -I./
-LDFLAGS += $(EXTRA_LDFLAGS) -lpthread
+LDFLAGS += $(EXTRA_LDFLAGS) -lpthread -lpmem -lpmemobj
 SOURCES += $(wildcard core/*.cc)
 OBJECTS += $(SOURCES:.cc=.o)
 DEPS += $(SOURCES:.cc=.d)
-EXEC = ycsbrocks
+EXEC = ycsbpmem
 
 HDRHISTOGRAM_DIR = HdrHistogram_c
 HDRHISTOGRAM_LIB = $(HDRHISTOGRAM_DIR)/src/libhdr_histogram_static.a

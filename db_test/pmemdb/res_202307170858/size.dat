@@ -1,0 +1,4 @@
+run_putonly  Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/nvme1n1   ext4  880G   16K  835G   1% /mnt/pmemdb_test
+run_e  Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/nvme1n1   ext4  880G   16K  835G   1% /mnt/pmemdb_test

@@ -1,0 +1,4 @@
+run_putonly  Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/nvme1n1   ext4  3.5T  196G  3.1T   6% /mnt/rocksdb_test
+run_e  Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/nvme1n1   ext4  3.5T  197G  3.1T   6% /mnt/rocksdb_test

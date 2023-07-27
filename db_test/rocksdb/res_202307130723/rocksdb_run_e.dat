@@ -1,0 +1,5 @@
+2023-07-13 07:31:19 0 sec: 0 operations;
+2023-07-13 07:31:24 5 sec: 64000 operations; [INSERT: Count=3206 Max=21938.17 Min=2.99 Avg=69.73 90=17.61 99=46.91 99.9=13975.55 99.99=21938.17] [SCAN: Count=60794 Max=15556.61 Min=20.86 Avg=938.19 90=1824.77 99=6172.67 99.9=9773.06 99.99=11329.53]
+Run runtime(sec): 5.3144
+Run operations(ops): 64000
+Run throughput(ops/sec): 12042.7
